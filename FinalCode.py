@@ -152,6 +152,8 @@ def fetchLinkCost():
                 continue
             else:
                 portNumber = linkPorts [srcShortID+ "::" +temp].split( "::" )[0]
+                print(src)
+                print(portNumber)
                 stats = "http://localhost:8080/wm/statistics/bandwidth/" + src +  "/" + portNumber + "/json"
                 a = "costcompute"
                 fetchResp(stats,a)
@@ -253,7 +255,7 @@ def addFlow():
     flowRule(currentNode ,flowCount,inPort,outPort, "http://127.0.0.1:8080/wm/staticflowpusher/json")
     previousNode = currentNode
     flowCount= 2 +flowCount
-    bestPath = path[shortestPath]
+    bestPath = path[list(path.keys())[0]]
     l = len(bestPath)
 
     for currentNode in range(0,l):
@@ -338,7 +340,7 @@ def getswitchlatency(jData):
                 duration = 2
                 bytecount = 2
             if( bytecount==0 ) : bytecount = 1
-            temp += ( duration / bytecount) * 100
+            temp += ( duration / bytecount)
         pathlat[ key ] = temp
         temp = 0
     
@@ -416,18 +418,10 @@ try:
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~IP and Mac addresses of all Devices in Topology~~~~~~~~~~~~~~~~~~\n\n", deviceMAC)
 
     # Host Switch Ports
-    print()
-    print()
-    print("~~~~~~~~~~~~~~~~~~~~~Hosts and connected SwitchPorts~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n", hostPorts)
-    print()
-    print()
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FINAL LINK COSTS~~~~~~~~~~~~~~~~~~~~~~~~~\n\t\t\t\t",finalcost)
-    print()
-    print()
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Available Paths for routing~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n",path)
     print()
     print()
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~SHORTEST PATH for routing~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\t\t\t\t\t\t ",shortestPath)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~SHORTEST PATH for routing~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\t\t\t\t\t\t ",path[list(path.keys())[0]])
     print()
     print()
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~Best path for routing~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\t\t\t",bestPath)
